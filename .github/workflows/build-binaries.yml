@@ -33,17 +33,16 @@ jobs:
 
       - name: Build binary
         shell: bash
-        - name: Build EXE (direct GAPP.py)
-          run: |
-            pyinstaller ^
-              --name "Horizon Setup" ^
-              --onefile ^
-              --windowed ^
-              --hidden-import lxml ^
-              --hidden-import html5lib ^
-              --hidden-import bs4 ^
-              --paths . ^
-              GAPP.py
+        run: |
+          pyinstaller ^
+            --name "Horizon Setup" ^
+            --onefile ^
+            --windowed ^
+            --hidden-import lxml ^
+            --hidden-import html5lib ^
+            --hidden-import bs4 ^
+            --paths . ^
+            GAPP.py
 
       - name: Prepare artifact
         shell: bash
