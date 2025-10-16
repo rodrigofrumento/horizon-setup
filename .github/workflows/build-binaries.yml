@@ -34,14 +34,14 @@ jobs:
       - name: Build executable for windows
         shell: bash
         run: |
-          pyinstaller ^
-            --name "Horizon Setup" ^
-            --onefile ^
-            --windowed ^
-            --hidden-import lxml ^
-            --hidden-import html5lib ^
-            --hidden-import bs4 ^
-            --paths . ^
+          pyinstaller \
+            --name "Horizon Setup" \
+            --onefile \
+            --windowed \
+            --hidden-import lxml \
+            --hidden-import html5lib \
+            --hidden-import bs4 \
+            --paths . \
             GAPP.py
 
       - name: Prepare artifact
