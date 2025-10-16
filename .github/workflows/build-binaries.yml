@@ -31,7 +31,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt pyinstaller==6.10.0
 
-      - name: Build binary
+      - name: Build executable for windows
         shell: bash
         run: |
           pyinstaller ^
