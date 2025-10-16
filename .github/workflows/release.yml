@@ -1,0 +1,52 @@
+name: Release Horizon Setup
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyinstaller==6.10.0
+
+      - name: Build Windows exe
+        run: |
+          pyinstaller ^
+            --name "Horizon Setup" ^
+            --onefile ^
+            --hidden-import lxml ^
+            --hidden-import html5lib ^
+            --hidden-import bs4 ^
+            --paths . ^
+            horizon_setup/main.py
+
+      - name: Create ZIP
+        run: |
+          mkdir upload
+          copy dist\* "upload\"
+          if exist .env.example copy .env.example "upload\"
+          if exist README.md copy README.md "upload\"
+          if exist LICENSE copy LICENSE "upload\"
+          powershell Compress-Archive -Path upload\* -DestinationPath horizon-setup-windows.zip
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            horizon-setup-windows.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
